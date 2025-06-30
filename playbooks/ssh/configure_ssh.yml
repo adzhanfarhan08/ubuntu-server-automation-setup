@@ -42,8 +42,7 @@
         state: enabled
         enabled: true
 
-  handler:
-    - name: Restart SSH
-      systemd:
-        name: sshd
-        state: restarted
+    - name: Configure SSH
+      handlers:
+        - name: restart SSH
+          service: name=sshd state=restarted
