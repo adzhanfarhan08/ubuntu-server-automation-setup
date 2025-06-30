@@ -8,30 +8,42 @@
         name: ufw
         state: present
 
+    # Open Port 22
     - name: Allow SSH (Port 22)
       ufw:
         rule: allow
         port: '22'
         protocol: tcp
 
+    # Open Custom Port 2222
     - name: Allow Custom SSH (Port 2222)
       ufw:
         rule: allow
         port: '2222'
         protocol: tcp
 
+    # Open Custom Port 80
     - name: Allow HTTP (Port 80)
       ufw:
         rule: allow
         port: '80'
         protocol: tcp
 
+    # Open Custom Port 443
     - name: Allow HTTOS (Port 443)
       ufw:
         rule: allow
         port: '443'
         protocol: tcp
 
+    # Enable UFW
     - name: Enable UFW
-      ufw:
+      systemd:
         state: enabled
+        enabled: true
+
+  handler:
+    - name: Restart SSH
+      systemd:
+        name: sshd
+        state: restarted
