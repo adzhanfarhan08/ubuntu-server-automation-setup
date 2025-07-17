@@ -1,15 +1,21 @@
 - name: Update and Upgrade System Packages
-  hosts: all # Target semua host atau grup tertentu
-  become: yes # Jalankan sebagai root
+  hosts: all # Target all hosts
+  become: yes # Run tasks with sudo privileges
 
   tasks:
-    - name: Update apt package index (Equivalent to 'apt update')
+    - name: Update apt package index
       apt:
         update_cache: yes
         cache_valid_time: 3600 # Cache dianggap valid selama 1 jam (opsional)
 
-    - name: Upgrade all packages (Equivalent to 'apt upgrade -y')
+    - name: Upgrade all packages
       apt:
-        upgrade: dist # Untuk upgrade ke versi terbaru (termasuk dependencies)
-        autoremove: yes # Hapus paket yang tidak terpakai
-      register: upgrade_result
+        upgrade: dist # Force upgrade of all packages
+
+    - name: Remove unused packages
+      apt:
+        autoremove: yes
+
+    - name: Clean up apt cache
+      apt:
+        autoclean: yes
