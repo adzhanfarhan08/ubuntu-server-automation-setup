@@ -3,19 +3,28 @@
   become: yes # Run tasks with sudo privileges
 
   tasks:
+    # Update apt package index
     - name: Update apt package index
       apt:
-        update_cache: yes
-        cache_valid_time: 3600 # Cache dianggap valid selama 1 jam (opsional)
+        update_cache: yes # Update the package index
+        cache_valid_time: 86400 # Update cache if older than 1 day
 
-    - name: Upgrade all packages
+    # Upgrade all packages
+    - name: Upgrade all packages # Force upgrade of all packages
       apt:
         upgrade: dist # Force upgrade of all packages
 
+    # Remove unused packages
     - name: Remove unused packages
       apt:
-        autoremove: yes
+        autoremove: yes # Remove package
 
+    # Clean up apt cache
     - name: Clean up apt cache
       apt:
-        autoclean: yes
+        autoclean: yes # Clean up the local repository of retrieved package files
+
+    - name: Install unattended-upgrades package
+      apt:
+        name: unattended-upgrades
+        state: present
